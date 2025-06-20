@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--main-bg);
+}
+
+.mainContent {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column; }

@@ -1,10 +1,26 @@
-import Link from 'next/link';
+import Head from 'next/head';
+import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar';
+import AssetsTable from '../components/AssetsTable';
+import styles from '../../styles/Home.module.css'; // Create this file for main layout
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
-    <div>
-      <h1>Welcome to Assets App</h1>
-      <Link href="/assets">Go to Assets List</Link>
+    <div className={styles.container}>
+      <Head>
+        <title>Assets - Mae Fah Luang University</title>
+        <meta name="description" content="Asset Management Dashboard" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Sidebar />
+
+      <main className={styles.mainContent}>
+        <Navbar />
+        <AssetsTable />
+      </main>
     </div>
   );
-}
+};
+
+export default Home;
