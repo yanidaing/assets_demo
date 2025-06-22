@@ -1,0 +1,29 @@
+### Test Asset Management API
+
+### 1. Get all assets
+GET http://localhost:4000/api/assets
+Content-Type: application/json
+
+### 2. Get asset by barcode
+GET http://localhost:4000/api/assets/123456789012345
+Content-Type: application/json
+
+### 3. Update asset status
+PATCH http://localhost:4000/api/assets/123456789012345/status
+Content-Type: application/json
+
+{
+  "status": "Damaged"
+}
+
+### 4. Get asset stats
+GET http://localhost:4000/api/assets/stats
+Content-Type: application/json
+
+### 5. Get asset summary
+GET http://localhost:4000/api/assets/summary
+Content-Type: application/json
+
+### 6. Get asset report
+GET http://localhost:4000/api/assets/report
+Content-Type: application/json 

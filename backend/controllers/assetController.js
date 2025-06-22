@@ -5,16 +5,16 @@ const {
   getAssetStats,
   getAssetSummary,
   getAssetReport,
-} = require('../models/asset.js');
+} = require("../models/asset.js");
 
 async function getAssetByBarcode(req, res) {
   const { barcode } = req.params;
   if (!barcode || barcode.length !== 15) {
-    return res.status(400).json({ error: 'Barcode must be 15 digits' });
+    return res.status(400).json({ error: "Barcode must be 15 digits" });
   }
   const asset = await findAssetByBarcode(barcode);
   if (!asset) {
-    return res.status(404).json({ error: 'Asset not found' });
+    return res.status(404).json({ error: "Asset not found" });
   }
   res.json(asset);
 }
@@ -23,16 +23,18 @@ async function patchAssetStatus(req, res) {
   const { barcode } = req.params;
   const { status } = req.body;
   if (!barcode || barcode.length !== 15) {
-    return res.status(400).json({ error: 'Barcode must be 15 digits' });
+    return res.status(400).json({ error: "Barcode must be 15 digits" });
   }
   if (!status) {
-    return res.status(400).json({ error: 'Status is required' });
+    return res.status(400).json({ error: "Status is required" });
   }
   const success = await updateAssetStatus(barcode, status);
   if (!success) {
-    return res.status(404).json({ error: 'Asset not found or status not updated' });
+    return res
+      .status(404)
+      .json({ error: "Asset not found or status not updated" });
   }
-  res.json({ message: 'Status updated' });
+  res.json({ message: "Status updated" });
 }
 
 async function getAssets(req, res) {
@@ -62,4 +64,4 @@ module.exports = {
   getStats,
   getSummary,
   getReport,
-}; 
+};

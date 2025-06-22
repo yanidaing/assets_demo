@@ -165,6 +165,27 @@
     font-size: 0.95rem;
     color: var(--text-color-primary);
     /* Remove border, let row spacing handle it */
+    vertical-align: middle;
+}
+
+/* สำหรับคอลัมน์ description */
+.assetsTable tbody td:nth-child(4) {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* สำหรับคอลัมน์ description ที่แสดง tooltip เมื่อ hover */
+.assetsTable tbody td:nth-child(4):hover {
+    white-space: normal;
+    overflow: visible;
+    position: relative;
+    z-index: 10;
+    background-color: var(--main-bg);
+    border-radius: 8px;
+    padding: 0.5rem;
+    box-shadow: var(--shadow-md);
 }
 
 .assetsTable tbody tr:first-child td:first-child {
