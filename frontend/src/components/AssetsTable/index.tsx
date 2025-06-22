@@ -82,7 +82,7 @@ const AssetsTable: React.FC = () => {
     <section className={styles.assetsSection}>
       <div className={styles.assetsHeader}>
         <div>
-          <h2>Assets</h2>
+          
           <p className={styles.totalAssets}>Total {assets.length} assets</p>
           <p className={styles.listOfEquipment}>List of equipment</p>
         </div>
