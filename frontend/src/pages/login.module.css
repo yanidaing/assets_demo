@@ -1,0 +1,195 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #F0F2F5;
+  font-family: Arial, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.main {
+  background-color: white;
+  padding: 40px 60px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  width: 450px;
+  z-index: 1;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #4A5568;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #718096;
+  margin-bottom: 30px;
+}
+
+.googleButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid #E2E8F0;
+  background-color: white;
+  color: #4A5568;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 25px;
+  transition: background-color 0.2s;
+}
+
+.googleButton:hover {
+  background-color: #F7FAFC;
+}
+
+.googleLogo {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.orDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 25px;
+  color: #CBD5E0;
+  font-size: 14px;
+  position: relative;
+}
+
+.orDivider::before,
+.orDivider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #E2E8F0;
+}
+
+.orDivider::before {
+  margin-right: 10px;
+}
+
+.orDivider::after {
+  margin-left: 10px;
+}
+
+.orText {
+  background-color: white;
+  padding: 0 10px;
+}
+
+.form {
+  width: 100%;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.label {
+  display: block;
+  font-size: 14px;
+  color: #4A5568;
+  margin-bottom: 8px;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 15px;
+  padding-right: 40px;
+  border-radius: 8px;
+  border: 1px solid #CBD5E0;
+  font-size: 16px;
+  color: #2D3748;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #667EEA;
+}
+
+.checkmark {
+  position: absolute;
+  right: 15px;
+  color: #667EEA;
+  font-size: 18px;
+}
+
+.loginButton {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #667EEA;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  transition: background-color 0.2s;
+  background-image: linear-gradient(to right, #667EEA, #805AD5);
+}
+
+.loginButton:hover {
+  background-image: linear-gradient(to right, #5A67D8, #714DBA);
+}
+
+.signupText {
+  font-size: 14px;
+  color: #718096;
+}
+
+.signupLink {
+  color: #667EEA;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signupLink:hover {
+  text-decoration: underline;
+}
+
+.bgShapeLeft {
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background-color: rgba(102, 126, 234, 0.1);
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+}
+
+.bgShapeRight {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 250px;
+  height: 250px;
+  background-color: rgba(128, 90, 213, 0.1);
+  border-radius: 50%;
+  filter: blur(70px);
+  z-index: 0;
+} 

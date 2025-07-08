@@ -52,7 +52,7 @@
 
 .filterButton {
     background-color: transparent;
-    border: none;
+    border: 1px solid var(--border-color);
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
     font-size: 0.95rem;
@@ -100,24 +100,27 @@
 }
 
 .filterDropdown {
-    background-color: var(--main-bg);
+    background-color: #fff;
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 0.8rem 1.2rem;
     font-size: 0.95rem;
     font-weight: 500;
-    color: var(--text-color-secondary);
+    color: var(--text-color-primary);
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     transition: all 0.2s ease-in-out;
+    box-shadow: var(--shadow-sm);
+    max-height: 3.2em;
+    overflow-y: auto;
 }
 
-.filterDropdown:hover {
-    background-color: var(--button-primary-bg);
-    color: var(--button-primary-text);
+.filterDropdown:focus {
+    outline: none;
     border-color: var(--button-primary-bg);
+    box-shadow: 0 0 0 2px var(--button-primary-bg, #4f46e5);
 }
 
 .dropdownIcon {
@@ -166,26 +169,6 @@
     color: var(--text-color-primary);
     /* Remove border, let row spacing handle it */
     vertical-align: middle;
-}
-
-/* สำหรับคอลัมน์ description */
-.assetsTable tbody td:nth-child(4) {
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* สำหรับคอลัมน์ description ที่แสดง tooltip เมื่อ hover */
-.assetsTable tbody td:nth-child(4):hover {
-    white-space: normal;
-    overflow: visible;
-    position: relative;
-    z-index: 10;
-    background-color: var(--main-bg);
-    border-radius: 8px;
-    padding: 0.5rem;
-    box-shadow: var(--shadow-md);
 }
 
 .assetsTable tbody tr:first-child td:first-child {
@@ -248,4 +231,240 @@
 
 .ellipsisButton:hover {
     background-color: rgba(0, 0, 0, 0.05);
-    color: var(--text-color-primary); }
+    color: var(--text-color-primary);
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalContent {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    min-width: 340px;
+    max-width: 95vw;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.editButton {
+    position: absolute;
+    top: 1.2rem;
+    right: 2.8rem;
+    background: var(--main-bg);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: var(--button-primary-bg);
+    transition: background 0.2s;
+    z-index: 2;
+}
+
+.editButton:hover {
+    background: var(--button-primary-bg);
+    color: #fff;
+}
+
+.closeButton {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+}
+
+.closeButton:hover {
+    color: #d32f2f;
+}
+
+.detailImageWrapper {
+    margin-bottom: 0;
+    margin-right: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 160px;
+}
+
+.detailInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    font-size: 1.15rem;
+    color: var(--text-color-primary);
+    width: 100%;
+    max-width: 400px;
+    justify-content: flex-start;
+}
+
+.detailInfo b {
+    font-weight: 600;
+}
+
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.saveButton {
+    background: var(--button-primary-bg, #667eea);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    transition: background 0.2s;
+}
+
+.saveButton:hover {
+    background: var(--button-primary-hover-bg, #5a67d8);
+}
+
+.cancelButton {
+    background: #f3f4f6;
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.cancelButton:hover {
+    background: #e5e7eb;
+    color: #111;
+}
+
+.deleteButton {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.deleteButton:hover {
+    background: #fecaca;
+    color: #7f1d1d;
+}
+
+.detailInfo input,
+.detailInfo select {
+    font-size: 1rem;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-left: 0.5rem;
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+    background: var(--main-bg);
+    color: var(--text-color-primary);
+}
+
+.detailInfo input[type="date"] {
+    min-width: 120px;
+}
+
+/* Custom style for select dropdown options (for Chrome, Edge, Safari) */
+.filterDropdown option {
+    padding: 0.5em 1em;
+}
+
+.customDropdown {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.customDropdownSelected {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.customDropdownList {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 8px 8px;
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+    max-height: 11.2rem; /* 4 รายการ (2.8rem x 4) */
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.customDropdownList li {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
+    color: var(--text-color-primary);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.customDropdownList li:hover,
+.activeDropdownItem {
+    background: var(--button-primary-bg);
+    color: var(--button-primary-text);
+}
+
+.modalContent input,
+.modalContent select {
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.modalContent input:focus,
+.modalContent select:focus {
+    border-color: var(--button-primary-bg, #667eea);
+    outline: none;
+}
+
+/* Add this for the select dropdown in modal */
+.modalContent select {
+    max-height: 11.2rem; /* 2.8rem x 4 = 4 options */
+    overflow-y: auto;
+}

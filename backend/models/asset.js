@@ -1,7 +1,7 @@
 const pool = require("../lib/db.js");
 
 async function findAssetByBarcode(barcode) {
-  const [rows] = await pool.query("SELECT * FROM assets WHERE barcode = ?", [
+  const [rows] = await pool.query("SELECT * FROM asset WHERE barcode = ?", [
     barcode,
   ]);
   return rows[0];
@@ -9,28 +9,30 @@ async function findAssetByBarcode(barcode) {
 
 async function updateAssetStatus(barcode, status) {
   const [result] = await pool.query(
-    "UPDATE assets SET status = ? WHERE barcode = ?",
+    "UPDATE asset SET status = ? WHERE barcode = ?",
     [status, barcode]
   );
   return result.affectedRows > 0;
 }
 
 async function getAllAssets() {
-  const [rows] = await pool.query("SELECT * FROM assets ORDER BY id ASC");
+  const [rows] = await pool.query(
+    "SELECT id, image, name, Location, Agency, Date, status, Barcode FROM asset ORDER BY id ASC"
+  );
   return rows;
 }
 
 async function getAssetStats() {
   const [rows] = await pool.query(
-    "SELECT status, COUNT(*) as count FROM assets GROUP BY status"
+    "SELECT status, COUNT(*) as count FROM asset GROUP BY status"
   );
   return rows;
 }
 
 async function getAssetSummary() {
-  const [[total]] = await pool.query("SELECT COUNT(*) as total FROM assets");
+  const [[total]] = await pool.query("SELECT COUNT(*) as total FROM asset");
   const [statusRows] = await pool.query(
-    "SELECT status, COUNT(*) as count FROM assets GROUP BY status"
+    "SELECT status, COUNT(*) as count FROM asset GROUP BY status"
   );
   return {
     total: total.total,
@@ -59,6 +61,44 @@ async function getAssetReport() {
   };
 }
 
+async function updateAssetById(id, asset) {
+  const [result] = await pool.query(
+    `UPDATE asset SET name=?, Location=?, Agency=?, Date=?, status=?, image=?, Barcode=? WHERE id=?`,
+    [
+      asset.name,
+      asset.Location,
+      asset.Agency,
+      asset.Date,
+      asset.status,
+      asset.image,
+      asset.Barcode,
+      id,
+    ]
+  );
+  return result.affectedRows > 0;
+}
+
+async function deleteAssetById(id) {
+  const [result] = await pool.query(`DELETE FROM asset WHERE id=?`, [id]);
+  return result.affectedRows > 0;
+}
+
+async function createAsset(asset) {
+  const [result] = await pool.query(
+    `INSERT INTO asset (name, Location, Agency, Date, status, image, Barcode) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    [
+      asset.name,
+      asset.Location,
+      asset.Agency,
+      asset.Date,
+      asset.status,
+      asset.image || null,
+      asset.Barcode,
+    ]
+  );
+  return { ...asset, id: result.insertId };
+}
+
 module.exports = {
   findAssetByBarcode,
   updateAssetStatus,
@@ -66,4 +106,7 @@ module.exports = {
   getAssetStats,
   getAssetSummary,
   getAssetReport,
+  updateAssetById,
+  deleteAssetById,
+  createAsset,
 };

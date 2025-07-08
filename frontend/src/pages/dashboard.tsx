@@ -1,11 +1,25 @@
 // src/pages/dashboard.tsx
 import Head from 'next/head';
-import Sidebar from '../components/Sidebar'; // Path นี้จะขึ้นอยู่กับว่า components อยู่ใน src หรือไม่
-import Navbar from '../components/Navbar';   // Path นี้จะขึ้นอยู่กับว่า components อยู่ใน src หรือไม่
-import DashboardContent from '../components/DashboardContent'; // Path ใหม่
-import styles from '../../styles/Home.module.css'; // Path นี้ต้องถูกต้องตามโครงสร้างที่คุณมี
+import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar';
+import DashboardContent from '../components/DashboardContent';
+import styles from '../../styles/Home.module.css';
+import React, { useEffect, useState } from 'react';
 
 const DashboardPage: React.FC = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    fetch('http://localhost:4000/api/auth/me', { credentials: 'include' })
+      .then(async (res) => {
+        if (res.ok) {
+          const user = await res.json();
+          setIsAdmin(user.role === 'admin');
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -14,10 +28,10 @@ const DashboardPage: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Sidebar />
+      <Sidebar isAdmin={isAdmin} />
 
       <main className={styles.mainContent}>
-      <Navbar title="Dashboard" />
+        <Navbar title="Dashboard" />
         <DashboardContent />
       </main>
     </div>

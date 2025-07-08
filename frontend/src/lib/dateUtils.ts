@@ -5,26 +5,23 @@
 /**
  * จัดรูปแบบวันที่ให้แสดงเฉพาะวันที่โดยไม่มีเวลา
  * @param dateString - วันที่ในรูปแบบ string (เช่น "2024-01-15T17:00:00.000Z")
- * @param locale - ภาษา (default: 'th-TH')
+ * @param locale - ภาษา (default: 'en-US')
  * @returns วันที่ในรูปแบบที่อ่านง่าย (เช่น "15/01/2567")
  */
 export const formatDate = (
   dateString: string,
-  locale: string = "th-TH"
+  locale: string = "en-US"
 ): string => {
   try {
     const date = new Date(dateString);
-
-    // ตรวจสอบว่าเป็นวันที่ที่ถูกต้องหรือไม่
     if (isNaN(date.getTime())) {
       return dateString;
     }
-
-    return date.toLocaleDateString(locale, {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    });
+    // Custom format: Mar 9 2021
+    const day = date.getDate();
+    const month = date.toLocaleString(locale, { month: "short" });
+    const year = date.getFullYear();
+    return `${month} ${day} ${year}`;
   } catch (error) {
     console.error("Error formatting date:", error);
     return dateString;
@@ -34,12 +31,12 @@ export const formatDate = (
 /**
  * จัดรูปแบบวันที่ให้แสดงแบบเต็ม (วันที่และเวลา)
  * @param dateString - วันที่ในรูปแบบ string
- * @param locale - ภาษา (default: 'th-TH')
+ * @param locale - ภาษา (default: 'en-US')
  * @returns วันที่และเวลาในรูปแบบที่อ่านง่าย
  */
 export const formatDateTime = (
   dateString: string,
-  locale: string = "th-TH"
+  locale: string = "en-US"
 ): string => {
   try {
     const date = new Date(dateString);
@@ -65,12 +62,12 @@ export const formatDateTime = (
 /**
  * จัดรูปแบบวันที่ให้แสดงแบบย่อ (เช่น "15 ม.ค. 67")
  * @param dateString - วันที่ในรูปแบบ string
- * @param locale - ภาษา (default: 'th-TH')
+ * @param locale - ภาษา (default: 'en-US')
  * @returns วันที่ในรูปแบบย่อ
  */
 export const formatShortDate = (
   dateString: string,
-  locale: string = "th-TH"
+  locale: string = "en-US"
 ): string => {
   try {
     const date = new Date(dateString);

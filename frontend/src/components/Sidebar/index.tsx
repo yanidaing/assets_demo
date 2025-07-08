@@ -1,10 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AiFillHome, AiOutlineBarChart, AiOutlineFileText } from 'react-icons/ai';
+import { AiFillHome, AiOutlineBarChart, AiOutlineFileText, AiOutlineUser, AiOutlineSetting } from 'react-icons/ai';
 import styles from './Sidebar.module.css';
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isAdmin?: boolean;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isAdmin }) => {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.header}>
@@ -37,6 +41,22 @@ const Sidebar: React.FC = () => {
                 <span>Reports</span>
             </Link>
           </li>
+          {isAdmin && (
+            <>
+              <li className={styles.navItem}>
+                <Link href="/admin/manage-users" className={styles.navLink}>
+                  <AiOutlineUser className={styles.icon} />
+                  <span>Manage Users</span>
+                </Link>
+              </li>
+              <li className={styles.navItem}>
+                <Link href="/admin/settings" className={styles.navLink}>
+                  <AiOutlineSetting className={styles.icon} />
+                  <span>Settings</span>
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </aside>

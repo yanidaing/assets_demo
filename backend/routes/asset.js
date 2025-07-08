@@ -6,6 +6,9 @@ const {
   getStats,
   getSummary,
   getReport,
+  updateAsset,
+  deleteAsset,
+  addAsset,
 } = require("../controllers/assetController.js");
 
 const router = express.Router();
@@ -15,7 +18,10 @@ router.get("/summary", getSummary);
 router.get("/report", getReport);
 router.get("/", getAssets);
 
-router.get("/:barcode", getAssetByBarcode);
-router.patch("/:barcode/status", patchAssetStatus);
+router.put("/:id", updateAsset);
+router.delete("/:id", deleteAsset);
+router.get("/barcode/:barcode", getAssetByBarcode);
+router.patch("/barcode/:barcode/status", patchAssetStatus);
+router.post("/", addAsset);
 
 module.exports = router;

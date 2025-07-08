@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-export default function HomeRedirect() {
+export default function AdminIndexRedirect() {
   const router = useRouter();
   useEffect(() => {
-    router.replace('/login');
+    router.replace('/admin/assets');
   }, [router]);
   return null;
 }

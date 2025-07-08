@@ -8,14 +8,14 @@ async function checkDatabase() {
       host: process.env.DB_HOST || "localhost",
       user: process.env.DB_USER || "root",
       password: process.env.DB_PASS || "",
-      database: process.env.DB_NAME || "assets",
+      database: process.env.DB_NAME || "asset",
     });
 
     const [rows] = await connection.execute(
-      "SELECT COUNT(*) as count FROM assets"
+      "SELECT COUNT(*) as count FROM asset"
     );
     console.log("✅ Database connection successful");
-    console.log(`📊 Total assets in database: ${rows[0].count}`);
+    console.log(`📊 Total asset in database: ${rows[0].count}`);
 
     await connection.end();
     return true;

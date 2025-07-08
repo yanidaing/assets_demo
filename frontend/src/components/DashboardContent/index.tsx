@@ -11,6 +11,7 @@ import type { ApexOptions } from 'apexcharts'; // ใช้ 'type' เพื่�
 const DashboardContent: React.FC = () => {
   const [summary, setSummary] = useState<AssetSummary | null>(null);
   const [report, setReport] = useState<AssetReport | null>(null);
+  const [assets, setAssets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,12 +20,14 @@ const DashboardContent: React.FC = () => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
-        const [summaryData, reportData] = await Promise.all([
+        const [summaryData, reportData, assetsData] = await Promise.all([
           apiService.getAssetSummary(),
-          apiService.getAssetReport()
+          apiService.getAssetReport(),
+          apiService.getAssets(),
         ]);
         setSummary(summaryData);
         setReport(reportData);
+        setAssets(assetsData);
         setError(null);
       } catch (err) {
         setError('Failed to load dashboard data');
@@ -61,18 +64,25 @@ const DashboardContent: React.FC = () => {
     return {
       chart: {
         height: 350,
-        type: 'line',
+        type: 'bar',
         toolbar: {
           show: false
         }
       },
-      stroke: {
-        curve: 'smooth',
-        width: 3,
-        colors: ['#4f46e5']
+      plotOptions: {
+        bar: {
+          borderRadius: 6,
+          columnWidth: '50%',
+          distributed: true,
+        }
+      },
+      fill: {
+        opacity: 0.85,
+        type: 'solid',
+        colors: ['#4f46e5', '#22c55e', '#eab308', '#ef4444']
       },
       xaxis: {
-        categories: report?.sellingReports.map(r => r.month) || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        categories: ['All', 'Activated', 'Damaged', 'Lost'],
         labels: {
           style: {
             colors: '#666',
@@ -94,8 +104,7 @@ const DashboardContent: React.FC = () => {
             colors: '#666',
           }
         },
-        min: 12000,
-        max: 20000,
+        min: 0,
         tickAmount: 4,
       },
       grid: {
@@ -115,13 +124,9 @@ const DashboardContent: React.FC = () => {
       },
       tooltip: {
         enabled: true,
-        x: {
-          show: true,
-          format: 'MMM',
-        },
         y: {
           formatter: function (value: number) {
-            return value.toLocaleString() + ' Baht';
+            return value.toLocaleString();
           },
         },
       }
@@ -129,11 +134,64 @@ const DashboardContent: React.FC = () => {
   };
 
   const getChartSeries = () => {
+    if (!summary) {
+      return [{ name: 'Property Amount', data: [0, 0, 0, 0] }];
+    }
     return [{
-      name: "Selling",
-      data: report?.sellingReports.map(r => r.value) || [12500, 14000, 17500, 13800, 19500, 16800]
+      name: 'Property Amount',
+      data: [
+        summary.total,
+        summary.statuses.Activated || 0,
+        summary.statuses.Damaged || 0,
+        summary.statuses.Lost || 0,
+      ]
     }];
   };
+
+  const barColors = [
+    '#4f46e5', '#22c55e', '#eab308', '#ef4444', '#06b6d4', '#f59e42', '#a21caf', '#f43f5e', '#10b981', '#fbbf24', '#6366f1', '#f87171'
+  ];
+
+  // สร้างข้อมูลนับจำนวน asset ต่อเดือน
+  const monthCount: Record<string, number> = {};
+  assets.forEach(asset => {
+    if (asset.Date) {
+      const d = new Date(asset.Date);
+      if (!isNaN(d.getTime())) {
+        const label = `${d.toLocaleString('en-US', { month: 'short' })} ${d.getFullYear()}`;
+        monthCount[label] = (monthCount[label] || 0) + 1;
+      }
+    }
+  });
+  const monthLabels = Object.keys(monthCount).sort((a, b) => {
+    const [ma, ya] = a.split(' ');
+    const [mb, yb] = b.split(' ');
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return parseInt(ya) - parseInt(yb) || months.indexOf(ma) - months.indexOf(mb);
+  });
+  const monthData = monthLabels.map(label => monthCount[label]);
+
+  const getMonthPieOptions = (): ApexOptions => {
+    return {
+      chart: {
+        type: 'pie',
+        height: 350,
+        toolbar: { show: false },
+      },
+      labels: monthLabels,
+      colors: monthLabels.map((_, i) => barColors[i % barColors.length]),
+      legend: {
+        position: 'bottom',
+        labels: { colors: '#666' },
+      },
+      tooltip: {
+        enabled: true,
+        y: { formatter: (value: number) => value.toLocaleString() },
+      },
+    };
+  };
+
+  const getMonthPieSeries = () => monthData;
 
   if (loading) {
     return (
@@ -154,7 +212,7 @@ const DashboardContent: React.FC = () => {
   return (
     <div className={styles.dashboardContent}>
       <DashboardCards cards={getCardData()} />
-      <DashboardChart series={getChartSeries()} options={getChartOptions()} />
+      <DashboardChart series={getChartSeries()} options={getChartOptions()} type="bar" title="Property Amount" />
     </div>
   );
 };

@@ -3,16 +3,15 @@ const API_BASE_URL =
 
 export interface Asset {
   id: number;
-  barcode: string;
   name: string;
   status: "Activated" | "Lost" | "Damaged";
-  description: string;
   Location: string;
   Agency: string;
   Date: string;
   image?: string;
   created_at?: string;
   updated_at?: string;
+  Barcode: string;
 }
 
 export interface AssetStats {
@@ -97,6 +96,49 @@ class ApiService {
   // ดึงรายงาน assets
   async getAssetReport(): Promise<AssetReport> {
     return this.request<AssetReport>("/assets/report");
+  }
+
+  // อัปเดตข้อมูล asset
+  async updateAsset(asset: Asset): Promise<Asset> {
+    return this.request<Asset>(`/assets/${asset.id}`, {
+      method: "PUT",
+      body: JSON.stringify(asset),
+    });
+  }
+
+  // ลบ asset
+  async deleteAsset(id: number): Promise<void> {
+    const url = `/assets/${id}`;
+    const response = await fetch(`${API_BASE_URL}${url}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.statusText}`);
+    }
+    // 204 No Content: do not parse response
+    return;
+  }
+
+  // เพิ่ม asset ใหม่
+  async addAsset(asset: Omit<Asset, "id">): Promise<Asset> {
+    return this.request<Asset>("/assets", {
+      method: "POST",
+      body: JSON.stringify(asset),
+    });
+  }
+
+  // ดึงข้อมูล users ทั้งหมด
+  async getUsers(): Promise<any[]> {
+    return this.request<any[]>("/users");
+  }
+
+  // อัปเดต role ของ user
+  async updateUserRole(id: number, role: string): Promise<void> {
+    await this.request<void>(`/users/${id}/role`, {
+      method: "PATCH",
+      body: JSON.stringify({ role }),
+    });
   }
 }
 

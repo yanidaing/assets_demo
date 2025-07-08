@@ -5,6 +5,9 @@ const {
   getAssetStats,
   getAssetSummary,
   getAssetReport,
+  updateAssetById,
+  deleteAssetById,
+  createAsset,
 } = require("../models/asset.js");
 
 async function getAssetByBarcode(req, res) {
@@ -57,6 +60,39 @@ async function getReport(req, res) {
   res.json(report);
 }
 
+async function updateAsset(req, res) {
+  const { id } = req.params;
+  const asset = req.body;
+  try {
+    const updated = await updateAssetById(id, asset);
+    if (!updated) return res.status(404).json({ error: "Asset not found" });
+    res.json({ ...asset, id: Number(id) });
+  } catch (err) {
+    res.status(500).json({ error: "Update failed" });
+  }
+}
+
+async function deleteAsset(req, res) {
+  const { id } = req.params;
+  try {
+    const deleted = await deleteAssetById(id);
+    if (!deleted) return res.status(404).json({ error: "Asset not found" });
+    res.status(204).end();
+  } catch (err) {
+    res.status(500).json({ error: "Delete failed" });
+  }
+}
+
+async function addAsset(req, res) {
+  const asset = req.body;
+  try {
+    const created = await createAsset(asset);
+    res.status(201).json(created);
+  } catch (err) {
+    res.status(500).json({ error: "Create failed" });
+  }
+}
+
 module.exports = {
   getAssetByBarcode,
   patchAssetStatus,
@@ -64,4 +100,7 @@ module.exports = {
   getStats,
   getSummary,
   getReport,
+  updateAsset,
+  deleteAsset,
+  addAsset,
 };

@@ -10,13 +10,15 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 interface DashboardChartProps {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
   options: ApexCharts.ApexOptions;
+  type?: 'bar' | 'pie';
+  title?: string;
 }
 
-const DashboardChart: React.FC<DashboardChartProps> = ({ series, options }) => {
+const DashboardChart: React.FC<DashboardChartProps> = ({ series, options, type = 'bar', title = 'Selling Reports' }) => {
   return (
     <div className={styles.chartCard}>
-      <h3 className={styles.chartTitle}>Selling Reports</h3>
-      <Chart options={options} series={series} type="line" height={350} />
+      <h3 className={styles.chartTitle}>{title}</h3>
+      <Chart options={options} series={series} type={type} height={350} />
     </div>
   );
 };
